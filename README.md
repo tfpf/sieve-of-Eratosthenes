@@ -1,2 +1,2 @@
-# sieve-of-Eratosthenes
-obtain the largest prime less than a given number using the Sieve of Eratosthenes
+# sieve of Eratosthenes
+Write all prime numbers less than the given number to a file. The program is quite fast at obtaining the numbers, but writing them is painfully slow.
