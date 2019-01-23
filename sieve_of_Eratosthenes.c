@@ -5,16 +5,8 @@
 #include<string.h>
 
 // main
-int main(int const argc, char const **argv)
+int main(void)
 {
-	// check arguments
-	// if(argc != 2)
-	// {
-	// 	printf("usage:\n");
-	// 	printf("\t./sieve.out <largest number>\n");
-	// 	return 1;
-	// }
-
 	// largest number and its square root
 	uint64_t limit, root_lim;
 	limit = 98589673;
