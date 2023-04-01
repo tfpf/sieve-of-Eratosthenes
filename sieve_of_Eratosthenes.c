@@ -78,6 +78,8 @@ int main(int const argc, char const *argv[])
         return EXIT_FAILURE;
     }
     fprintf(stderr, "Allocated approximately %lld KiB (%lld MiB) to store the sieve.\n", limit >> 13, limit >> 23);
+    composite_array_set(composite_array, 0, true);
+    composite_array_set(composite_array, 1, true);
 
     // Initially, all bits are cleared. By the end, only the bits corresponding
     // to prime numbers remain cleared.
