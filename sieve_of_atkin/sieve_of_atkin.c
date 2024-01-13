@@ -22,12 +22,11 @@ static int shifts[] = {-1, 0, -1, -1, -1, -1, -1, 1, -1, -1, -1, 2, -1, 3, -1, -
  * @param x Starting abcissa.
  * @param y0 Starting ordinate.
  *****************************************************************************/
-void sieve_of_atkin_algorithm_4_1(uint16_t *sieve, size_t sieve_len, int delta, int x, int y0)
+void sieve_of_atkin_algorithm_4_1(uint16_t *sieve, size_t sieve_len, int delta, long long x, long long y0)
 {
-    int k0 = (4 * x * x + y0 * y0 - delta) / 60;
-    while((size_t)k0 < sieve_len)
+    long long k0 = (4 * x * x + y0 * y0 - delta) / 60;
+    while((long long unsigned)k0 < sieve_len)
     {
-        // TODO Prevent overflow by rejecting large sieve lengths.
         k0 += 2 * x + 15;
         x += 15;
     }
