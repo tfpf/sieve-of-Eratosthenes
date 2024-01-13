@@ -95,6 +95,40 @@ void sieve_of_atkin_algorithm_4_2(uint16_t *sieve, size_t sieve_len, int delta, 
 }
 
 /******************************************************************************
+ * Algorithm 4.3.
+ *
+ * @param sieve Sieve of Atkin.
+ * @param sieve_len Its length.
+ * @param delta What each of the prime numbers must be congruent to modulo 60.
+ * @param x Starting abcissa.
+ * @param y0 Starting ordinate.
+ *****************************************************************************/
+void sieve_of_atkin_algorithm_4_3(uint16_t *sieve, size_t sieve_len, int delta, long long x, long long y0)
+{
+    long long k0 = (3 * x * x - y0 * y0 - delta) / 60;
+    while(true)
+    {
+        while((long long unsigned)k0 >= sieve_len)
+        {
+            if(x <= y0)
+            {
+                return;
+            }
+            k0 -= y0 + 15;
+            y0 += 30;
+        }
+        for(long long k = k0, y = y0; k >= 0 && y < x;)
+        {
+            sieve[k] ^= (uint16_t)1 << shifts[delta];
+            k -= y + 15;
+            y += 30;
+        }
+        k0 += x + 5;
+        x += 10;
+    }
+}
+
+/******************************************************************************
  * Algorithm 3.1.
  *
  * @param sieve Sieve of Atkin.
@@ -137,6 +171,27 @@ void sieve_of_atkin_algorithm_3_2(uint16_t *sieve, size_t sieve_len, int delta)
 }
 
 /******************************************************************************
+ * Algorithm 3.3.
+ *
+ * @param sieve Sieve of Atkin.
+ * @param sieve_len Its length.
+ * @param delta What each of the prime numbers must be congruent to modulo 60.
+ *****************************************************************************/
+void sieve_of_atkin_algorithm_3_3(uint16_t *sieve, size_t sieve_len, int delta)
+{
+    for(int f = 1; f <= 10; ++f)
+    {
+        for(int g = 1; g <= 30; ++g)
+        {
+            if(delta == (3 * f * f - g * g) % 60)
+            {
+                sieve_of_atkin_algorithm_4_3(sieve, sieve_len, delta, f, g);
+            }
+        }
+    }
+}
+
+/******************************************************************************
  * Generate the sieve of Atkin.
  *
  * @param limit Non-strict upper bound up to which primes will be found.
@@ -165,6 +220,10 @@ uint16_t *sieve_of_atkin(size_t limit)
 
             case 7: case 19: case 31: case 43:
             sieve_of_atkin_algorithm_3_2(sieve, sieve_len, delta);
+            break;
+
+            case 11: case 23: case 47: case 59:
+            sieve_of_atkin_algorithm_3_3(sieve, sieve_len, delta);
             break;
         }
     }
