@@ -1,24 +1,22 @@
-#include <inttypes.h>
 #include <stdbool.h>
 #include <stddef.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-// A number may be prime if it has one of these residues modulo 60. Otherwise,
-// it is definitely composite. (Exceptions are 2, 3 and 5, which are handled
-// separately.)
-static short residues[] = {1, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 49, 53, 59};
-
-// Differences between consecutive residues.
+// Consecutive differences between the 16 coprime residues modulo 60: 1, 7, 11,
+// 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 49, 53 and 59.
 static short unsigned offsets[] = {6, 4, 2, 4, 2, 4, 6, 2, 6, 4, 2, 4, 2, 4, 6, 2};
 
-// Indices are residues; values are their positions in the array of residues.
-// Values at other indices are 16.
+// If an index is a coprime residue modulo 60, the corresponding value is its
+// position in {1, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 49, 53, 59}.
+// Otherwise, the value is 16.
 static short unsigned shifts[] = {16, 0, 16, 16, 16, 16, 16, 1, 16, 16, 16, 2, 16, 3, 16, 16, 16, 4, 16, 5, 16, 16, 16, 6, 16, 16, 16, 16, 16, 7, 16, 8, 16, 16, 16, 16, 16, 9, 16, 16, 16, 10, 16, 11, 16, 16, 16, 12, 16, 13, 16, 16, 16, 14, 16, 16, 16, 16, 16, 15};
 
-// Indices are residues; values indicate the algorithms to apply. (e.g. 1
-// indicates that algorithms 3.1 and 4.1 should be applied; 0 indicates that
-// no algorithms should be applied.)
+// If an index is a coprime residue modulo 60, the corresponding value
+// indicates the algorithms to apply: 1 for algorithms 3.1 and 4.1, 2 for 3.2
+// and 4.2, and 3 for 3.3 and 4.3. Otherwise, the value is 0, indicating a
+// no-op.
 static short algorithm[] = {0, 1, 0, 0, 0, 0, 0, 2, 0, 0, 0, 3, 0, 1, 0, 0, 0, 1, 0, 2, 0, 0, 0, 3, 0, 0, 0, 0, 0, 1, 0, 2, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0, 0, 0, 3, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 3};
 
 /******************************************************************************
@@ -113,8 +111,8 @@ void sieve_of_atkin_algorithm_4_3(uint16_t *sieve, size_t sieve_len, int delta, 
     long long k0 = (3 * x * x - y0 * y0 - delta) / 60;
     while(true)
     {
-        // It can be negative here, so check its sign before casting it to an
-        // unsigned type. If it is negative, it is automatically less than the
+        // `k0` can be negative here, so check its sign before doing an
+        // unsigned cast. If it is negative, it is automatically less than the
         // sieve length.
         while(k0 > 0 && (long long unsigned)k0 >= sieve_len)
         {
@@ -191,7 +189,8 @@ void sieve_of_atkin_algorithm_3_3(uint16_t *sieve, size_t sieve_len, int delta)
     {
         for(int g = 1; g <= 30; ++g)
         {
-            // We need residues moduo 60, so make negative remainders positive.
+            // We need residues modulo 60, so make negative remainders
+            // positive.
             int remainder = (3 * f * f - g * g) % 60;
             remainder = remainder < 0 ? remainder + 60 : remainder;
             if(delta == remainder)
@@ -250,12 +249,11 @@ uint16_t *sieve_of_atkin(size_t limit)
                 {
                     size_t sieve_idx = composite / 60;
                     size_t shifts_idx = composite % 60;
-                    short shift = shifts[shifts_idx];
                     // A marginal speedup is obtained by avoiding a branch
                     // here. Instead of checking whether the value is 16, just
                     // use it with a number wider than 16 bits (thereby
                     // avoiding undefined behaviour).
-                    sieve[sieve_idx] &= ~(1UL << shift);
+                    sieve[sieve_idx] &= ~(1UL << shifts[shifts_idx]);
                 }
             }
             num_mod_60 += offsets[offsets_idx];
