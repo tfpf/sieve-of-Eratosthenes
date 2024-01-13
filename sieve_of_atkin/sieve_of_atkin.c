@@ -108,7 +108,10 @@ void sieve_of_atkin_algorithm_4_3(uint16_t *sieve, size_t sieve_len, int delta, 
     long long k0 = (3 * x * x - y0 * y0 - delta) / 60;
     while(true)
     {
-        while((long long unsigned)k0 >= sieve_len)
+        // It can be negative here, so check its sign before casting it to an
+        // unsigned type. If it is negative, it is automatically less than the
+        // sieve length.
+        while(k0 > 0 && (long long unsigned)k0 >= sieve_len)
         {
             if(x <= y0)
             {
@@ -183,7 +186,10 @@ void sieve_of_atkin_algorithm_3_3(uint16_t *sieve, size_t sieve_len, int delta)
     {
         for(int g = 1; g <= 30; ++g)
         {
-            if(delta == (3 * f * f - g * g) % 60)
+            // We need residues moduo 60, so make negative remainders positive.
+            int remainder = (3 * f * f - g * g) % 60;
+            remainder = remainder < 0 ? remainder + 60 : remainder;
+            if(delta == remainder)
             {
                 sieve_of_atkin_algorithm_4_3(sieve, sieve_len, delta, f, g);
             }
