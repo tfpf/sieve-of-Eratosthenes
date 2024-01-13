@@ -10,4 +10,5 @@ I found the code very hard to understand, so I wrote it from scratch myself.
 
 Also included here is an non-optimal implementation of the sieve of Eratosthenes which I wrote a long time ago.
 
-[I have rewritten this sieve of Atkin implementation in Rust.](https://github.com/tfpf/project-euler)
+I rewrote this sieve of Atkin implementation in Rust to augment
+[my Project Euler solutions](https://github.com/tfpf/project-euler) library.
