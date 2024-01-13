@@ -46,9 +46,50 @@ void sieve_of_atkin_algorithm_4_1(uint16_t *sieve, size_t sieve_len, int delta, 
             k0 += y0 + 15;
             y0 += 30;
         }
-        for(size_t k = k0, y = y0; k < sieve_len; k += y + 15, y += 30)
+        for(size_t k = k0, y = y0; k < sieve_len;)
         {
             sieve[k] ^= (uint16_t)1 << shifts[delta];
+            k += y + 15;
+            y += 30;
+        }
+    }
+}
+
+/******************************************************************************
+ * Algorithm 4.2.
+ *
+ * @param sieve Sieve of Atkin.
+ * @param sieve_len Its length.
+ * @param delta What each of the prime numbers must be congruent to modulo 60.
+ * @param x Starting abcissa.
+ * @param y0 Starting ordinate.
+ *****************************************************************************/
+void sieve_of_atkin_algorithm_4_2(uint16_t *sieve, size_t sieve_len, int delta, long long x, long long y0)
+{
+    long long k0 = (3 * x * x + y0 * y0 - delta) / 60;
+    while((long long unsigned)k0 < sieve_len)
+    {
+        k0 += x + 5;
+        x += 10;
+    }
+    while(true)
+    {
+        x -= 10;
+        k0 -= x + 5;
+        if(x <= 0)
+        {
+            return;
+        }
+        while(k0 < 0)
+        {
+            k0 += y0 + 15;
+            y0 += 30;
+        }
+        for(size_t k = k0, y = y0; k < sieve_len;)
+        {
+            sieve[k] ^= (uint16_t)1 << shifts[delta];
+            k += y + 15;
+            y += 30;
         }
     }
 }
@@ -69,6 +110,27 @@ void sieve_of_atkin_algorithm_3_1(uint16_t *sieve, size_t sieve_len, int delta)
             if(delta == (4 * f * f + g * g) % 60)
             {
                 sieve_of_atkin_algorithm_4_1(sieve, sieve_len, delta, f, g);
+            }
+        }
+    }
+}
+
+/******************************************************************************
+ * Algorithm 3.2.
+ *
+ * @param sieve Sieve of Atkin.
+ * @param sieve_len Its length.
+ * @param delta What each of the prime numbers must be congruent to modulo 60.
+ *****************************************************************************/
+void sieve_of_atkin_algorithm_3_2(uint16_t *sieve, size_t sieve_len, int delta)
+{
+    for(int f = 1; f <= 10; ++f)
+    {
+        for(int g = 1; g <= 30; ++g)
+        {
+            if(delta == (3 * f * f + g * g) % 60)
+            {
+                sieve_of_atkin_algorithm_4_2(sieve, sieve_len, delta, f, g);
             }
         }
     }
@@ -99,6 +161,11 @@ uint16_t *sieve_of_atkin(size_t limit)
         {
             case 1: case 13: case 17: case 29: case 37: case 41: case 49: case 53:
             sieve_of_atkin_algorithm_3_1(sieve, sieve_len, delta);
+            break;
+
+            case 7: case 19: case 31: case 43:
+            sieve_of_atkin_algorithm_3_2(sieve, sieve_len, delta);
+            break;
         }
     }
 
