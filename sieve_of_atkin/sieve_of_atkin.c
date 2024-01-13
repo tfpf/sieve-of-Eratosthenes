@@ -9,8 +9,11 @@
 // separately.)
 static int residues[] = {1, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 49, 53, 59};
 
-// In this lookup table, indices are the above residues, and values are their
-// positions in the above array. Values at other indices are -1.
+// Differences between consecutive residues.
+static int offsets[] = {6, 4, 2, 4, 2, 4, 6, 2, 6, 4, 2, 4, 2, 4, 6, 2};
+
+// Indices are residues; values are their positions in the array of residues.
+// Values at other indices are -1.
 static int shifts[] = {-1, 0, -1, -1, -1, -1, -1, 1, -1, -1, -1, 2, -1, 3, -1, -1, -1, 4, -1, 5, -1, -1, -1, 6, -1, -1, -1, -1, -1, 7, -1, 8, -1, -1, -1, -1, -1, 9, -1, -1, -1, 10, -1, 11, -1, -1, -1, 12, -1, 13, -1, -1, -1, 14, -1, -1, -1, -1, -1, 15};
 
 /******************************************************************************
@@ -121,17 +124,20 @@ int main(int const argc, char const *argv[])
     }
 
     uint16_t *sieve = sieve_of_atkin(limit);
-    for(size_t i = 0; i <= limit; ++i)
+    for(size_t num = 7, num_div_60 = 0, num_mod_60 = 7, offsets_idx = 1; num <= limit;)
     {
-        int shift = shifts[i % 60];
-        if(shift == -1)
+        if((sieve[num_div_60] >> shifts[num_mod_60] & 1) == 1)
         {
-            continue;
+            printf("%zu\n", num);
         }
-        if((sieve[i / 60] >> shift & 1) == 1)
+        num_mod_60 += offsets[offsets_idx];
+        if(num_mod_60 >= 60)
         {
-            printf("%zu\n", i);
+            num_mod_60 -= 60;
+            num_div_60 += 1;
         }
+        num += offsets[offsets_idx];
+        offsets_idx = (offsets_idx + 1) % 16;
     }
 
     return EXIT_SUCCESS;
