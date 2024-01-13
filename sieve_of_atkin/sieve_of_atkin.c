@@ -124,20 +124,17 @@ int main(int const argc, char const *argv[])
     }
 
     uint16_t *sieve = sieve_of_atkin(limit);
-    for(size_t num = 7, num_div_60 = 0, num_mod_60 = 7, offsets_idx = 1; num <= limit;)
+    for(size_t num = 1, num_div_60 = 0; num <= limit; ++num_div_60)
     {
-        if((sieve[num_div_60] >> shifts[num_mod_60] & 1) == 1)
+        for(size_t offsets_idx = 0, num_mod_60 = 1; offsets_idx < 16 && num <= limit; ++offsets_idx)
         {
-            printf("%zu\n", num);
+            if((sieve[num_div_60] >> shifts[num_mod_60] & 1) == 1)
+            {
+                printf("%zu\n", num);
+            }
+            num_mod_60 += offsets[offsets_idx];
+            num += offsets[offsets_idx];
         }
-        num_mod_60 += offsets[offsets_idx];
-        if(num_mod_60 >= 60)
-        {
-            num_mod_60 -= 60;
-            num_div_60 += 1;
-        }
-        num += offsets[offsets_idx];
-        offsets_idx = (offsets_idx + 1) % 16;
     }
 
     return EXIT_SUCCESS;
