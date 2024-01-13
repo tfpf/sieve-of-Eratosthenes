@@ -239,6 +239,7 @@ uint16_t *sieve_of_atkin(size_t limit)
         }
     }
 
+    // Exclude squares of prime numbers and their multiples.
     for(size_t num = 1, num_div_60 = 0; num < limit_rounded; ++num_div_60)
     {
         for(size_t offsets_idx = 0, num_mod_60 = 1; offsets_idx < 16; ++offsets_idx)
@@ -250,10 +251,11 @@ uint16_t *sieve_of_atkin(size_t limit)
                     size_t sieve_idx = composite / 60;
                     size_t shifts_idx = composite % 60;
                     short shift = shifts[shifts_idx];
-                    if(shift != 16)
-                    {
-                        sieve[sieve_idx] &= ~((uint16_t)1 << shift);
-                    }
+                    // A marginal speedup is obtained by avoiding a branch
+                    // here. Instead of checking whether the value is 16, just
+                    // use it with a number wider than 16 bits (thereby
+                    // avoiding undefined behaviour).
+                    sieve[sieve_idx] &= ~(1UL << shift);
                 }
             }
             num_mod_60 += offsets[offsets_idx];
