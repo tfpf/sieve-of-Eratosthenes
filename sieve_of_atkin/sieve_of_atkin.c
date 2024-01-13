@@ -7,14 +7,19 @@
 // A number may be prime if it has one of these residues modulo 60. Otherwise,
 // it is definitely composite. (Exceptions are 2, 3 and 5, which are handled
 // separately.)
-static int residues[] = {1, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 49, 53, 59};
+static short residues[] = {1, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 49, 53, 59};
 
 // Differences between consecutive residues.
-static int offsets[] = {6, 4, 2, 4, 2, 4, 6, 2, 6, 4, 2, 4, 2, 4, 6, 2};
+static short unsigned offsets[] = {6, 4, 2, 4, 2, 4, 6, 2, 6, 4, 2, 4, 2, 4, 6, 2};
 
 // Indices are residues; values are their positions in the array of residues.
-// Values at other indices are -1.
-static int shifts[] = {-1, 0, -1, -1, -1, -1, -1, 1, -1, -1, -1, 2, -1, 3, -1, -1, -1, 4, -1, 5, -1, -1, -1, 6, -1, -1, -1, -1, -1, 7, -1, 8, -1, -1, -1, -1, -1, 9, -1, -1, -1, 10, -1, 11, -1, -1, -1, 12, -1, 13, -1, -1, -1, 14, -1, -1, -1, -1, -1, 15};
+// Values at other indices are 16.
+static short unsigned shifts[] = {16, 0, 16, 16, 16, 16, 16, 1, 16, 16, 16, 2, 16, 3, 16, 16, 16, 4, 16, 5, 16, 16, 16, 6, 16, 16, 16, 16, 16, 7, 16, 8, 16, 16, 16, 16, 16, 9, 16, 16, 16, 10, 16, 11, 16, 16, 16, 12, 16, 13, 16, 16, 16, 14, 16, 16, 16, 16, 16, 15};
+
+// Indices are residues; values indicate the algorithms to apply. (e.g. 1
+// indicates that algorithms 3.1 and 4.1 should be applied; 0 indicates that
+// no algorithms should be applied.)
+static short algorithm[] = {0, 1, 0, 0, 0, 0, 0, 2, 0, 0, 0, 3, 0, 1, 0, 0, 0, 1, 0, 2, 0, 0, 0, 3, 0, 0, 0, 0, 0, 1, 0, 2, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0, 0, 0, 3, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 3};
 
 /******************************************************************************
  * Algorithm 4.1.
@@ -218,17 +223,17 @@ uint16_t *sieve_of_atkin(size_t limit)
     uint16_t *sieve = calloc(sieve_len, sizeof *sieve);
     for(int delta = 0; delta < 60; ++delta)
     {
-        switch(delta)
+        switch(algorithm[delta])
         {
-            case 1: case 13: case 17: case 29: case 37: case 41: case 49: case 53:
+            case 1:
             sieve_of_atkin_algorithm_3_1(sieve, sieve_len, delta);
             break;
 
-            case 7: case 19: case 31: case 43:
+            case 2:
             sieve_of_atkin_algorithm_3_2(sieve, sieve_len, delta);
             break;
 
-            case 11: case 23: case 47: case 59:
+            case 3:
             sieve_of_atkin_algorithm_3_3(sieve, sieve_len, delta);
             break;
         }
@@ -244,8 +249,8 @@ uint16_t *sieve_of_atkin(size_t limit)
                 {
                     size_t sieve_idx = composite / 60;
                     size_t shifts_idx = composite % 60;
-                    int shift = shifts[shifts_idx];
-                    if(shift != -1)
+                    short shift = shifts[shifts_idx];
+                    if(shift != 16)
                     {
                         sieve[sieve_idx] &= ~((uint16_t)1 << shift);
                     }
@@ -278,18 +283,20 @@ int main(int const argc, char const *argv[])
     }
 
     uint16_t *sieve = sieve_of_atkin(limit);
+    size_t count = 0;
     for(size_t num = 1, num_div_60 = 0; num <= limit; ++num_div_60)
     {
         for(size_t offsets_idx = 0, num_mod_60 = 1; offsets_idx < 16 && num <= limit; ++offsets_idx)
         {
             if((sieve[num_div_60] >> shifts[num_mod_60] & 1) == 1)
             {
-                printf("%zu\n", num);
+                ++count;
             }
             num_mod_60 += offsets[offsets_idx];
             num += offsets[offsets_idx];
         }
     }
+    printf("%zu\n", count);
 
     return EXIT_SUCCESS;
 }
