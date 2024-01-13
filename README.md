@@ -9,3 +9,5 @@ optimised technique described by Atkin and Bernstein. While Bernstein has alread
 I found the code very hard to understand, so I wrote it from scratch myself.
 
 Also included here is an non-optimal implementation of the sieve of Eratosthenes which I wrote a long time ago.
+
+[I have rewritten this sieve of Atkin implementation in Rust.](https://github.com/tfpf/project-euler)
