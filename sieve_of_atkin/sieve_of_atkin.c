@@ -48,7 +48,7 @@ void sieve_of_atkin_algorithm_4_1(uint16_t *sieve, size_t sieve_len, int delta, 
         }
         for(size_t k = k0, y = y0; k < sieve_len; k += y + 15, y += 30)
         {
-            sieve[k] ^= 1 << shifts[delta];
+            sieve[k] ^= (uint16_t)1 << shifts[delta];
         }
     }
 }
@@ -99,6 +99,28 @@ uint16_t *sieve_of_atkin(size_t limit)
         {
             case 1: case 13: case 17: case 29: case 37: case 41: case 49: case 53:
             sieve_of_atkin_algorithm_3_1(sieve, sieve_len, delta);
+        }
+    }
+
+    for(size_t num = 1, num_div_60 = 0; num < limit_rounded; ++num_div_60)
+    {
+        for(size_t offsets_idx = 0, num_mod_60 = 1; offsets_idx < 16; ++offsets_idx)
+        {
+            if((sieve[num_div_60] >> shifts[num_mod_60] & 1) == 1)
+            {
+                for(size_t composite = num * num; composite < limit_rounded; composite += num * num)
+                {
+                    size_t sieve_idx = composite / 60;
+                    size_t shifts_idx = composite % 60;
+                    int shift = shifts[shifts_idx];
+                    if(shift != -1)
+                    {
+                        sieve[sieve_idx] &= ~((uint16_t)1 << shift);
+                    }
+                }
+            }
+            num_mod_60 += offsets[offsets_idx];
+            num += offsets[offsets_idx];
         }
     }
 
