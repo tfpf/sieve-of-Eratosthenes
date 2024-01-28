@@ -5,8 +5,8 @@
 # Sieve of Atkin
 
 A prime sieving algorithm which is faster than a wheel-factorised sieve of Eratosthenes. I have implemented the
-optimised technique described by Atkin and Bernstein. While Bernstein has already provided an optimised implementation,
-I found the code very hard to understand, so I wrote it from scratch myself.
+technique described by Atkin and Bernstein. While Bernstein has already provided an optimised implementation, I found
+the code very hard to understand, and it does not store the list of primes, so I decided to write it myself.
 
 Also included here is an non-optimal implementation of the sieve of Eratosthenes which I wrote a long time ago.
 
