@@ -19,6 +19,16 @@ static short unsigned shifts[] = {16, 0, 16, 16, 16, 16, 16, 1, 16, 16, 16, 2, 1
 // no-op.
 static short algorithm[] = {0, 1, 0, 0, 0, 0, 0, 2, 0, 0, 0, 3, 0, 1, 0, 0, 0, 1, 0, 2, 0, 0, 0, 3, 0, 0, 0, 0, 0, 1, 0, 2, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0, 0, 0, 3, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 3};
 
+struct SieveOfAtkin
+{
+    size_t limit;
+    size_t sieve_len;
+    // Each element of this array is a 16-element bitfield which indicates the
+    // primality of 16 coprime residues modulo 60. If a bit is set, the
+    // corresponding number is prime.
+    uint16_t *sieve;
+};
+
 /******************************************************************************
  * Algorithm 4.1.
  *
