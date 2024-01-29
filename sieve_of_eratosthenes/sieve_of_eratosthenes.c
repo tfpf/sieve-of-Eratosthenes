@@ -25,7 +25,7 @@ struct SieveOfEratosthenes
 /******************************************************************************
  * Generate the sieve of Eratosthenes up to and including the given number.
  *
- * @param limit Non-strict upper bound up to which primes will be found.
+ * @param limit Non-strict upper bound up to which primes should be found.
  *
  * @return Sieve of Eratosthenes. This should be deleted after use.
  *****************************************************************************/
@@ -72,7 +72,7 @@ struct SieveOfEratosthenes *sieve_of_eratosthenes_new(size_t limit)
             {
                 for(size_t multiple = num * num; multiple < limit_rounded; multiple += num)
                 {
-                    sieve[multiple / 60] |= 1 << SHIFTS[multiple % 60];
+                    sieve[multiple / 60] |= (uint32_t)1 << SHIFTS[multiple % 60];
                 }
             }
             num += OFFSETS[offsets_idx];
