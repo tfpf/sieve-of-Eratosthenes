@@ -1,16 +1,18 @@
-#include <stdio.h>
-#include <stdint.h>
-#include <stdlib.h>
-#include <stddef.h>
 #include <math.h>
+#include <stddef.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 // Consecutive differences between coprime residues modulo 60: 1, 7, 11, 13,
 // 17, 19, 23, 29, 31, 37, 41, 43, 47, 49, 53 and 59.
-static short unsigned OFFSETS[] = {6, 4, 2, 4, 2, 4, 6, 2, 6, 4, 2, 4, 2, 4, 6, 2};
+static short unsigned OFFSETS[] = { 6, 4, 2, 4, 2, 4, 6, 2, 6, 4, 2, 4, 2, 4, 6, 2 };
 
 // Position of the bit indicating the primality of a coprime residue modulo 60
 // in a 16-element bitfield. For non-coprime residues, the value is 16.
-static short unsigned SHIFTS[] = {16, 0, 16, 16, 16, 16, 16, 1, 16, 16, 16, 2, 16, 3, 16, 16, 16, 4, 16, 5, 16, 16, 16, 6, 16, 16, 16, 16, 16,7, 16, 8, 16, 16, 16, 16, 16, 9, 16, 16, 16, 10, 16, 11, 16, 16, 16, 12, 16, 13, 16, 16, 16, 14, 16, 16, 16,16, 16, 15};
+static short unsigned SHIFTS[] = { 16, 0, 16, 16, 16, 16, 16, 1, 16, 16, 16, 2, 16, 3, 16, 16, 16, 4, 16, 5, 16, 16,
+    16, 6, 16, 16, 16, 16, 16, 7, 16, 8, 16, 16, 16, 16, 16, 9, 16, 16, 16, 10, 16, 11, 16, 16, 16, 12, 16, 13, 16, 16,
+    16, 14, 16, 16, 16, 16, 16, 15 };
 
 struct SieveOfEratosthenes
 {
@@ -29,10 +31,11 @@ struct SieveOfEratosthenes
  *
  * @return Sieve of Eratosthenes. This should be deleted after use.
  *****************************************************************************/
-struct SieveOfEratosthenes *sieve_of_eratosthenes_new(size_t limit)
+struct SieveOfEratosthenes *
+sieve_of_eratosthenes_new(size_t limit)
 {
     struct SieveOfEratosthenes *soe = malloc(sizeof *soe);
-    if(soe == NULL)
+    if (soe == NULL)
     {
         fprintf(stderr, "Memory error. Fatally low memory.\n");
         exit(EXIT_FAILURE);
@@ -41,7 +44,7 @@ struct SieveOfEratosthenes *sieve_of_eratosthenes_new(size_t limit)
 
     // Strict upper bound divisible by 60.
     size_t limit_rounded = limit - limit % 60 + 60;
-    if(limit_rounded <= limit)
+    if (limit_rounded <= limit)
     {
         fprintf(stderr, "Overflow detected. Argument is too large.\n");
         exit(EXIT_FAILURE);
@@ -53,7 +56,7 @@ struct SieveOfEratosthenes *sieve_of_eratosthenes_new(size_t limit)
     size_t sieve_len = limit / 60 + 1;
     soe->sieve_len = sieve_len;
     uint16_t *sieve = calloc(sieve_len, sizeof *sieve);
-    if(sieve == NULL)
+    if (sieve == NULL)
     {
         fprintf(stderr, "Memory error. Argument is too large.\n");
         exit(EXIT_FAILURE);
@@ -64,20 +67,20 @@ struct SieveOfEratosthenes *sieve_of_eratosthenes_new(size_t limit)
     // Set the bits for multiples of primes.
     size_t num = 1;
     size_t offsets_idx = 0;
-    for(size_t sieve_idx = 0; sieve_idx < sieve_len; ++sieve_idx)
+    for (size_t sieve_idx = 0; sieve_idx < sieve_len; ++sieve_idx)
     {
-        for(int shift = 0; shift < 16; ++shift)
+        for (int shift = 0; shift < 16; ++shift)
         {
-            if((sieve[sieve_idx] >> shift & 1) == 0)
+            if ((sieve[sieve_idx] >> shift & 1) == 0)
             {
-                for(size_t multiple = num * num; multiple < limit_rounded; multiple += num)
+                for (size_t multiple = num * num; multiple < limit_rounded; multiple += num)
                 {
                     sieve[multiple / 60] |= (uint32_t)1 << SHIFTS[multiple % 60];
                 }
             }
             num += OFFSETS[offsets_idx];
             offsets_idx = (offsets_idx + 1) % 16;
-            if(num > limit_rounded_isqrt)
+            if (num > limit_rounded_isqrt)
             {
                 return soe;
             }
@@ -93,22 +96,23 @@ struct SieveOfEratosthenes *sieve_of_eratosthenes_new(size_t limit)
  *
  * @param Number of primes.
  *****************************************************************************/
-size_t sieve_of_eratosthenes_count(struct SieveOfEratosthenes *soe)
+size_t
+sieve_of_eratosthenes_count(struct SieveOfEratosthenes *soe)
 {
     size_t num = 1;
     size_t offsets_idx = 0;
     size_t count = 0;
-    for(size_t sieve_idx = 0; sieve_idx < soe->sieve_len; ++sieve_idx)
+    for (size_t sieve_idx = 0; sieve_idx < soe->sieve_len; ++sieve_idx)
     {
-        for(int shift = 0; shift < 16; ++shift)
+        for (int shift = 0; shift < 16; ++shift)
         {
-            if((soe->sieve[sieve_idx] >> shift & 1) == 0)
+            if ((soe->sieve[sieve_idx] >> shift & 1) == 0)
             {
                 ++count;
             }
             num += OFFSETS[offsets_idx];
             offsets_idx = (offsets_idx + 1) % 16;
-            if(num > soe->limit)
+            if (num > soe->limit)
             {
                 return count;
             }
@@ -122,7 +126,8 @@ size_t sieve_of_eratosthenes_count(struct SieveOfEratosthenes *soe)
  *
  * @param soe Sieve of Eratosthenes.
  *****************************************************************************/
-void sieve_of_eratosthenes_delete(struct SieveOfEratosthenes *soe)
+void
+sieve_of_eratosthenes_delete(struct SieveOfEratosthenes *soe)
 {
     free(soe->sieve);
     free(soe);
@@ -131,14 +136,15 @@ void sieve_of_eratosthenes_delete(struct SieveOfEratosthenes *soe)
 /******************************************************************************
  * Main function.
  *****************************************************************************/
-int main(int const argc, char const *argv[])
+int
+main(int const argc, char const *argv[])
 {
     size_t limit = 100;
-    if(argc > 1)
+    if (argc > 1)
     {
         char *endptr;
         long long unsigned limit_ = strtoull(argv[1], &endptr, 10);
-        if(*endptr != '\0')
+        if (*endptr != '\0')
         {
             fprintf(stderr, "Argument is unparseable.\n");
             return EXIT_FAILURE;
