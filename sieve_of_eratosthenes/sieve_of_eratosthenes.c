@@ -118,6 +118,17 @@ size_t sieve_of_eratosthenes_count(struct SieveOfEratosthenes *soe)
 }
 
 /******************************************************************************
+ * Release memory.
+ *
+ * @param soe Sieve of Eratosthenes.
+ *****************************************************************************/
+void sieve_of_eratosthenes_delete(struct SieveOfEratosthenes *soe)
+{
+    free(soe->sieve);
+    free(soe);
+}
+
+/******************************************************************************
  * Main function.
  *****************************************************************************/
 int main(int const argc, char const *argv[])
@@ -137,5 +148,6 @@ int main(int const argc, char const *argv[])
 
     struct SieveOfEratosthenes *soe = sieve_of_eratosthenes_new(limit);
     size_t num_of_primes = sieve_of_eratosthenes_count(soe);
+    sieve_of_eratosthenes_delete(soe);
     printf("%zu primes (excluding 2, 3 and 5) till %zu\n", num_of_primes, limit);
 }
