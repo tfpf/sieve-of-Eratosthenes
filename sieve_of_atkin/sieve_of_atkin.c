@@ -33,7 +33,7 @@ struct SieveOfAtkin
  * @param x Starting abcissa.
  * @param y0 Starting ordinate.
  *****************************************************************************/
-void
+static void
 sieve_of_atkin_algorithm_4_1(struct SieveOfAtkin *soa, int delta, long long x, long long y0)
 {
     long long k0 = (4 * x * x + y0 * y0 - delta) / 60;
@@ -72,7 +72,7 @@ sieve_of_atkin_algorithm_4_1(struct SieveOfAtkin *soa, int delta, long long x, l
  * @param x Starting abcissa.
  * @param y0 Starting ordinate.
  *****************************************************************************/
-void
+static void
 sieve_of_atkin_algorithm_4_2(struct SieveOfAtkin *soa, int delta, long long x, long long y0)
 {
     long long k0 = (3 * x * x + y0 * y0 - delta) / 60;
@@ -111,7 +111,7 @@ sieve_of_atkin_algorithm_4_2(struct SieveOfAtkin *soa, int delta, long long x, l
  * @param x Starting abcissa.
  * @param y0 Starting ordinate.
  *****************************************************************************/
-void
+static void
 sieve_of_atkin_algorithm_4_3(struct SieveOfAtkin *soa, int delta, long long x, long long y0)
 {
     long long k0 = (3 * x * x - y0 * y0 - delta) / 60;
@@ -143,7 +143,7 @@ sieve_of_atkin_algorithm_4_3(struct SieveOfAtkin *soa, int delta, long long x, l
  * @param soa Sieve of Atkin.
  * @param delta What each of the prime numbers must be congruent to modulo 60.
  *****************************************************************************/
-void
+static void
 sieve_of_atkin_algorithm_3_1(struct SieveOfAtkin *soa, int delta)
 {
     for (int f = 1; f <= 15; ++f)
@@ -164,7 +164,7 @@ sieve_of_atkin_algorithm_3_1(struct SieveOfAtkin *soa, int delta)
  * @param soa Sieve of Atkin.
  * @param delta What each of the prime numbers must be congruent to modulo 60.
  *****************************************************************************/
-void
+static void
 sieve_of_atkin_algorithm_3_2(struct SieveOfAtkin *soa, int delta)
 {
     for (int f = 1; f <= 10; f += 2)
@@ -185,7 +185,7 @@ sieve_of_atkin_algorithm_3_2(struct SieveOfAtkin *soa, int delta)
  * @param soa Sieve of Atkin.
  * @param delta What each of the prime numbers must be congruent to modulo 60.
  *****************************************************************************/
-void
+static void
 sieve_of_atkin_algorithm_3_3(struct SieveOfAtkin *soa, int delta)
 {
     for (int f = 1; f <= 10; ++f)
