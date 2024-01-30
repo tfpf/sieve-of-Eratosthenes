@@ -34,13 +34,13 @@ struct SieveOfEratosthenes
 struct SieveOfEratosthenes *
 sieve_of_eratosthenes_new(size_t limit)
 {
-    struct SieveOfEratosthenes *soe = malloc(sizeof *soe);
-    if (soe == NULL)
+    struct SieveOfEratosthenes *erato = malloc(sizeof *erato);
+    if (erato == NULL)
     {
         fprintf(stderr, "Memory error. Fatally low memory.\n");
         exit(EXIT_FAILURE);
     }
-    soe->limit = limit;
+    erato->limit = limit;
 
     // Strict upper bound divisible by 60.
     size_t limit_rounded = limit - limit % 60 + 60;
@@ -54,7 +54,7 @@ sieve_of_eratosthenes_new(size_t limit)
     // Start with a cleared array, indicating that all numbers are prime. Set
     // the bit for 1, because it is not prime.
     size_t sieve_len = limit / 60 + 1;
-    soe->sieve_len = sieve_len;
+    erato->sieve_len = sieve_len;
     uint16_t *sieve = calloc(sieve_len, sizeof *sieve);
     if (sieve == NULL)
     {
@@ -62,7 +62,7 @@ sieve_of_eratosthenes_new(size_t limit)
         exit(EXIT_FAILURE);
     }
     sieve[0] = 1;
-    soe->sieve = sieve;
+    erato->sieve = sieve;
 
     // Set the bits for multiples of primes.
     size_t num = 1;
@@ -82,37 +82,37 @@ sieve_of_eratosthenes_new(size_t limit)
             offsets_idx = (offsets_idx + 1) % 16;
             if (num > limit_rounded_isqrt)
             {
-                return soe;
+                return erato;
             }
         }
     }
-    return soe;
+    return erato;
 }
 
 /******************************************************************************
  * Count the number of prime numbers which have been found.
  *
- * @param soe Sieve of Eratosthenes.
+ * @param erato Sieve of Eratosthenes.
  *
  * @param Number of primes.
  *****************************************************************************/
 size_t
-sieve_of_eratosthenes_count(struct SieveOfEratosthenes *soe)
+sieve_of_eratosthenes_count(struct SieveOfEratosthenes *erato)
 {
     size_t num = 1;
     size_t offsets_idx = 0;
     size_t count = 0;
-    for (size_t sieve_idx = 0; sieve_idx < soe->sieve_len; ++sieve_idx)
+    for (size_t sieve_idx = 0; sieve_idx < erato->sieve_len; ++sieve_idx)
     {
         for (int shift = 0; shift < 16; ++shift)
         {
-            if ((soe->sieve[sieve_idx] >> shift & 1) == 0)
+            if ((erato->sieve[sieve_idx] >> shift & 1) == 0)
             {
                 ++count;
             }
             num += OFFSETS[offsets_idx];
             offsets_idx = (offsets_idx + 1) % 16;
-            if (num > soe->limit)
+            if (num > erato->limit)
             {
                 return count;
             }
@@ -124,13 +124,13 @@ sieve_of_eratosthenes_count(struct SieveOfEratosthenes *soe)
 /******************************************************************************
  * Release memory.
  *
- * @param soe Sieve of Eratosthenes.
+ * @param erato Sieve of Eratosthenes.
  *****************************************************************************/
 void
-sieve_of_eratosthenes_delete(struct SieveOfEratosthenes *soe)
+sieve_of_eratosthenes_delete(struct SieveOfEratosthenes *erato)
 {
-    free(soe->sieve);
-    free(soe);
+    free(erato->sieve);
+    free(erato);
 }
 
 /******************************************************************************
@@ -144,7 +144,7 @@ main(int const argc, char const *argv[])
     {
         char *endptr;
         long long unsigned limit_ = strtoull(argv[1], &endptr, 10);
-        if (*endptr != '\0')
+        if (*endptr != '\0' || limit_ > SIZE_MAX)
         {
             fprintf(stderr, "Argument is unparseable.\n");
             return EXIT_FAILURE;
@@ -152,8 +152,8 @@ main(int const argc, char const *argv[])
         limit = limit_;
     }
 
-    struct SieveOfEratosthenes *soe = sieve_of_eratosthenes_new(limit);
-    size_t num_of_primes = sieve_of_eratosthenes_count(soe);
-    sieve_of_eratosthenes_delete(soe);
+    struct SieveOfEratosthenes *erato = sieve_of_eratosthenes_new(limit);
+    size_t num_of_primes = sieve_of_eratosthenes_count(erato);
+    sieve_of_eratosthenes_delete(erato);
     printf("%zu primes (excluding 2, 3 and 5) till %zu\n", num_of_primes, limit);
 }
