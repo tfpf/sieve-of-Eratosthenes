@@ -28,16 +28,16 @@ struct SieveOfAtkin
 /******************************************************************************
  * Algorithm 4.1.
  *
- * @param soa Sieve of Atkin.
+ * @param atkin Sieve of Atkin.
  * @param delta What each of the prime numbers must be congruent to modulo 60.
  * @param x Starting abcissa.
  * @param y0 Starting ordinate.
  *****************************************************************************/
 static void
-sieve_of_atkin_algorithm_4_1(struct SieveOfAtkin *soa, int delta, long long x, long long y0)
+sieve_of_atkin_algorithm_4_1(struct SieveOfAtkin *atkin, int delta, long long x, long long y0)
 {
     long long k0 = (4 * x * x + y0 * y0 - delta) / 60;
-    while (k0 < (long long)soa->sieve_len)
+    while (k0 < (long long)atkin->sieve_len)
     {
         k0 += 2 * x + 15;
         x += 15;
@@ -55,9 +55,9 @@ sieve_of_atkin_algorithm_4_1(struct SieveOfAtkin *soa, int delta, long long x, l
             k0 += y0 + 15;
             y0 += 30;
         }
-        for (long long k = k0, y = y0; k < (long long)soa->sieve_len;)
+        for (long long k = k0, y = y0; k < (long long)atkin->sieve_len;)
         {
-            soa->sieve[k] ^= 1 << SHIFTS[delta];
+            atkin->sieve[k] ^= 1 << SHIFTS[delta];
             k += y + 15;
             y += 30;
         }
@@ -67,16 +67,16 @@ sieve_of_atkin_algorithm_4_1(struct SieveOfAtkin *soa, int delta, long long x, l
 /******************************************************************************
  * Algorithm 4.2.
  *
- * @param soa Sieve of Atkin.
+ * @param atkin Sieve of Atkin.
  * @param delta What each of the prime numbers must be congruent to modulo 60.
  * @param x Starting abcissa.
  * @param y0 Starting ordinate.
  *****************************************************************************/
 static void
-sieve_of_atkin_algorithm_4_2(struct SieveOfAtkin *soa, int delta, long long x, long long y0)
+sieve_of_atkin_algorithm_4_2(struct SieveOfAtkin *atkin, int delta, long long x, long long y0)
 {
     long long k0 = (3 * x * x + y0 * y0 - delta) / 60;
-    while (k0 < (long long)soa->sieve_len)
+    while (k0 < (long long)atkin->sieve_len)
     {
         k0 += x + 5;
         x += 10;
@@ -94,9 +94,9 @@ sieve_of_atkin_algorithm_4_2(struct SieveOfAtkin *soa, int delta, long long x, l
             k0 += y0 + 15;
             y0 += 30;
         }
-        for (long long k = k0, y = y0; k < (long long)soa->sieve_len;)
+        for (long long k = k0, y = y0; k < (long long)atkin->sieve_len;)
         {
-            soa->sieve[k] ^= 1 << SHIFTS[delta];
+            atkin->sieve[k] ^= 1 << SHIFTS[delta];
             k += y + 15;
             y += 30;
         }
@@ -106,18 +106,18 @@ sieve_of_atkin_algorithm_4_2(struct SieveOfAtkin *soa, int delta, long long x, l
 /******************************************************************************
  * Algorithm 4.3.
  *
- * @param soa Sieve of Atkin.
+ * @param atkin Sieve of Atkin.
  * @param delta What each of the prime numbers must be congruent to modulo 60.
  * @param x Starting abcissa.
  * @param y0 Starting ordinate.
  *****************************************************************************/
 static void
-sieve_of_atkin_algorithm_4_3(struct SieveOfAtkin *soa, int delta, long long x, long long y0)
+sieve_of_atkin_algorithm_4_3(struct SieveOfAtkin *atkin, int delta, long long x, long long y0)
 {
     long long k0 = (3 * x * x - y0 * y0 - delta) / 60;
     while (true)
     {
-        while (k0 >= (long long)soa->sieve_len)
+        while (k0 >= (long long)atkin->sieve_len)
         {
             if (x <= y0)
             {
@@ -128,7 +128,7 @@ sieve_of_atkin_algorithm_4_3(struct SieveOfAtkin *soa, int delta, long long x, l
         }
         for (long long k = k0, y = y0; k >= 0 && y < x;)
         {
-            soa->sieve[k] ^= 1 << SHIFTS[delta];
+            atkin->sieve[k] ^= 1 << SHIFTS[delta];
             k -= y + 15;
             y += 30;
         }
@@ -140,11 +140,11 @@ sieve_of_atkin_algorithm_4_3(struct SieveOfAtkin *soa, int delta, long long x, l
 /******************************************************************************
  * Algorithm 3.1.
  *
- * @param soa Sieve of Atkin.
+ * @param atkin Sieve of Atkin.
  * @param delta What each of the prime numbers must be congruent to modulo 60.
  *****************************************************************************/
 static void
-sieve_of_atkin_algorithm_3_1(struct SieveOfAtkin *soa, int delta)
+sieve_of_atkin_algorithm_3_1(struct SieveOfAtkin *atkin, int delta)
 {
     for (int f = 1; f <= 15; ++f)
     {
@@ -152,7 +152,7 @@ sieve_of_atkin_algorithm_3_1(struct SieveOfAtkin *soa, int delta)
         {
             if (delta == (4 * f * f + g * g) % 60)
             {
-                sieve_of_atkin_algorithm_4_1(soa, delta, f, g);
+                sieve_of_atkin_algorithm_4_1(atkin, delta, f, g);
             }
         }
     }
@@ -161,11 +161,11 @@ sieve_of_atkin_algorithm_3_1(struct SieveOfAtkin *soa, int delta)
 /******************************************************************************
  * Algorithm 3.2.
  *
- * @param soa Sieve of Atkin.
+ * @param atkin Sieve of Atkin.
  * @param delta What each of the prime numbers must be congruent to modulo 60.
  *****************************************************************************/
 static void
-sieve_of_atkin_algorithm_3_2(struct SieveOfAtkin *soa, int delta)
+sieve_of_atkin_algorithm_3_2(struct SieveOfAtkin *atkin, int delta)
 {
     for (int f = 1; f <= 10; f += 2)
     {
@@ -173,7 +173,7 @@ sieve_of_atkin_algorithm_3_2(struct SieveOfAtkin *soa, int delta)
         {
             if (delta == (3 * f * f + g * g) % 60)
             {
-                sieve_of_atkin_algorithm_4_2(soa, delta, f, g);
+                sieve_of_atkin_algorithm_4_2(atkin, delta, f, g);
             }
         }
     }
@@ -182,11 +182,11 @@ sieve_of_atkin_algorithm_3_2(struct SieveOfAtkin *soa, int delta)
 /******************************************************************************
  * Algorithm 3.3.
  *
- * @param soa Sieve of Atkin.
+ * @param atkin Sieve of Atkin.
  * @param delta What each of the prime numbers must be congruent to modulo 60.
  *****************************************************************************/
 static void
-sieve_of_atkin_algorithm_3_3(struct SieveOfAtkin *soa, int delta)
+sieve_of_atkin_algorithm_3_3(struct SieveOfAtkin *atkin, int delta)
 {
     for (int f = 1; f <= 10; ++f)
     {
@@ -198,7 +198,7 @@ sieve_of_atkin_algorithm_3_3(struct SieveOfAtkin *soa, int delta)
             remainder = remainder < 0 ? remainder + 60 : remainder;
             if (delta == remainder)
             {
-                sieve_of_atkin_algorithm_4_3(soa, delta, f, g);
+                sieve_of_atkin_algorithm_4_3(atkin, delta, f, g);
             }
         }
     }
@@ -214,13 +214,13 @@ sieve_of_atkin_algorithm_3_3(struct SieveOfAtkin *soa, int delta)
 struct SieveOfAtkin *
 sieve_of_atkin_new(size_t limit)
 {
-    struct SieveOfAtkin *soa = malloc(sizeof *soa);
-    if (soa == NULL)
+    struct SieveOfAtkin *atkin = malloc(sizeof *atkin);
+    if (atkin == NULL)
     {
         fprintf(stderr, "Memory error. Fatally low memory.\n");
         exit(EXIT_FAILURE);
     }
-    soa->limit = limit;
+    atkin->limit = limit;
 
     // Strict upper bound divisible by 60.
     size_t limit_rounded = limit - limit % 60 + 60;
@@ -233,31 +233,31 @@ sieve_of_atkin_new(size_t limit)
 
     // Start with a cleared array, indicating that all numbers are composite.
     size_t sieve_len = limit / 60 + 1;
-    soa->sieve_len = sieve_len;
+    atkin->sieve_len = sieve_len;
     uint16_t *sieve = calloc(sieve_len, sizeof *sieve);
     if (sieve == NULL)
     {
         fprintf(stderr, "Memory error. Argument is too large.\n");
         exit(EXIT_FAILURE);
     }
-    soa->sieve = sieve;
+    atkin->sieve = sieve;
 
-    sieve_of_atkin_algorithm_3_1(soa, 1);
-    sieve_of_atkin_algorithm_3_1(soa, 13);
-    sieve_of_atkin_algorithm_3_1(soa, 17);
-    sieve_of_atkin_algorithm_3_1(soa, 29);
-    sieve_of_atkin_algorithm_3_1(soa, 37);
-    sieve_of_atkin_algorithm_3_1(soa, 41);
-    sieve_of_atkin_algorithm_3_1(soa, 49);
-    sieve_of_atkin_algorithm_3_1(soa, 53);
-    sieve_of_atkin_algorithm_3_2(soa, 7);
-    sieve_of_atkin_algorithm_3_2(soa, 19);
-    sieve_of_atkin_algorithm_3_2(soa, 31);
-    sieve_of_atkin_algorithm_3_2(soa, 43);
-    sieve_of_atkin_algorithm_3_3(soa, 11);
-    sieve_of_atkin_algorithm_3_3(soa, 23);
-    sieve_of_atkin_algorithm_3_3(soa, 47);
-    sieve_of_atkin_algorithm_3_3(soa, 59);
+    sieve_of_atkin_algorithm_3_1(atkin, 1);
+    sieve_of_atkin_algorithm_3_1(atkin, 13);
+    sieve_of_atkin_algorithm_3_1(atkin, 17);
+    sieve_of_atkin_algorithm_3_1(atkin, 29);
+    sieve_of_atkin_algorithm_3_1(atkin, 37);
+    sieve_of_atkin_algorithm_3_1(atkin, 41);
+    sieve_of_atkin_algorithm_3_1(atkin, 49);
+    sieve_of_atkin_algorithm_3_1(atkin, 53);
+    sieve_of_atkin_algorithm_3_2(atkin, 7);
+    sieve_of_atkin_algorithm_3_2(atkin, 19);
+    sieve_of_atkin_algorithm_3_2(atkin, 31);
+    sieve_of_atkin_algorithm_3_2(atkin, 43);
+    sieve_of_atkin_algorithm_3_3(atkin, 11);
+    sieve_of_atkin_algorithm_3_3(atkin, 23);
+    sieve_of_atkin_algorithm_3_3(atkin, 47);
+    sieve_of_atkin_algorithm_3_3(atkin, 59);
 
     // Clear the bits for multiples of squares of primes.
     size_t num = 1;
@@ -278,37 +278,37 @@ sieve_of_atkin_new(size_t limit)
             offsets_idx = (offsets_idx + 1) % 16;
             if (num > limit_rounded_isqrt)
             {
-                return soa;
+                return atkin;
             }
         }
     }
-    return soa;
+    return atkin;
 }
 
 /******************************************************************************
  * Count the number of prime numbers which have been found.
  *
- * @param soa Sieve of Atkin.
+ * @param atkin Sieve of Atkin.
  *
  * @param Number of primes.
  *****************************************************************************/
 size_t
-sieve_of_atkin_count(struct SieveOfAtkin *soa)
+sieve_of_atkin_count(struct SieveOfAtkin *atkin)
 {
     size_t num = 1;
     size_t offsets_idx = 0;
     size_t count = 0;
-    for (size_t sieve_idx = 0; sieve_idx < soa->sieve_len; ++sieve_idx)
+    for (size_t sieve_idx = 0; sieve_idx < atkin->sieve_len; ++sieve_idx)
     {
         for (int shift = 0; shift < 16; ++shift)
         {
-            if ((soa->sieve[sieve_idx] >> shift & 1) == 1)
+            if ((atkin->sieve[sieve_idx] >> shift & 1) == 1)
             {
                 ++count;
             }
             num += OFFSETS[offsets_idx];
             offsets_idx = (offsets_idx + 1) % 16;
-            if (num > soa->limit)
+            if (num > atkin->limit)
             {
                 return count;
             }
@@ -320,13 +320,13 @@ sieve_of_atkin_count(struct SieveOfAtkin *soa)
 /******************************************************************************
  * Release memory.
  *
- * @param soa Sieve of Atkin.
+ * @param atkin Sieve of Atkin.
  *****************************************************************************/
 void
-sieve_of_atkin_delete(struct SieveOfAtkin *soa)
+sieve_of_atkin_delete(struct SieveOfAtkin *atkin)
 {
-    free(soa->sieve);
-    free(soa);
+    free(atkin->sieve);
+    free(atkin);
 }
 
 /******************************************************************************
@@ -340,7 +340,7 @@ main(int const argc, char const *argv[])
     {
         char *endptr;
         long long unsigned limit_ = strtoull(argv[1], &endptr, 10);
-        if (*endptr != '\0')
+        if (*endptr != '\0' || limit_ > SIZE_MAX)
         {
             fprintf(stderr, "Argument is unparseable.\n");
             return EXIT_FAILURE;
@@ -348,8 +348,8 @@ main(int const argc, char const *argv[])
         limit = limit_;
     }
 
-    struct SieveOfAtkin *soa = sieve_of_atkin_new(limit);
-    size_t num_of_primes = sieve_of_atkin_count(soa);
-    sieve_of_atkin_delete(soa);
+    struct SieveOfAtkin *atkin = sieve_of_atkin_new(limit);
+    size_t num_of_primes = sieve_of_atkin_count(atkin);
+    sieve_of_atkin_delete(atkin);
     printf("%zu primes (excluding 2, 3 and 5) till %zu\n", num_of_primes, limit);
 }
