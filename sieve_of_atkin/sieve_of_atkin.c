@@ -271,7 +271,7 @@ sieve_of_atkin_new(size_t limit)
                 size_t num_sqr = num * num;
                 for (size_t multiple = num_sqr; multiple < limit_rounded; multiple += num_sqr)
                 {
-                    sieve[multiple / 60] &= ~((uint32_t)1 << SHIFTS[multiple % 60]);
+                    sieve[multiple / 60] &= ~((long unsigned)1 << SHIFTS[multiple % 60]);
                 }
             }
             num += OFFSETS[offsets_idx];

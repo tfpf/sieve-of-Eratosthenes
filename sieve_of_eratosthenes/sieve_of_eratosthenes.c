@@ -75,7 +75,7 @@ sieve_of_eratosthenes_new(size_t limit)
             {
                 for (size_t multiple = num * num; multiple < limit_rounded; multiple += num)
                 {
-                    sieve[multiple / 60] |= (uint32_t)1 << SHIFTS[multiple % 60];
+                    sieve[multiple / 60] |= (long unsigned)1 << SHIFTS[multiple % 60];
                 }
             }
             num += OFFSETS[offsets_idx];
