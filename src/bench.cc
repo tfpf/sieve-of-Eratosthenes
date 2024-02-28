@@ -17,24 +17,40 @@ extern "C"
 }
 
 /******************************************************************************
- * Main function.
+ * Run a benchmark.
+ *
+ * @param sieve_new Function which constructs the sieve.
+ * @param sieve_delete Function which deallocates the sieve.
  *****************************************************************************/
-int
-main(void)
+template <typename C, typename D>
+void
+bench(C sieve_new, D sieve_delete, char const *message)
 {
-    int constexpr iterations = 16384;
-
+    std::cout << message << '\n';
+    int constexpr iterations = 1024;
     for (unsigned twopower = 10; twopower < 20; ++twopower)
     {
         std::size_t limit = 1UL << twopower;
         auto begin = std::chrono::steady_clock::now();
         for (int _ = 0; _ < iterations; ++_)
         {
-            struct SieveOfEratosthenes *erato = sieve_of_eratosthenes_new(limit);
-            sieve_of_eratosthenes_delete(erato);
+            auto sieve = sieve_new(limit);
+            sieve_delete(sieve);
         }
         auto end = std::chrono::steady_clock::now();
-        auto average_delay = std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count() / iterations;
-        std::cout << twopower << ' ' << std::setw(4) << average_delay << " µs\n";
+        auto total_delay = std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count();
+        auto average_delay = total_delay / iterations;
+        std::cout << twopower << ' ' << std::setw(10) << average_delay << " µs\n";
     }
+    std::cout << '\n';
+}
+
+/******************************************************************************
+ * Main function.
+ *****************************************************************************/
+int
+main(void)
+{
+    bench(sieve_of_eratosthenes_new, sieve_of_eratosthenes_delete, "Eratosthenes");
+    bench(sieve_of_atkin_new, sieve_of_atkin_delete, "Atkin");
 }
