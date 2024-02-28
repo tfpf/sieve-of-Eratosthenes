@@ -132,28 +132,3 @@ sieve_of_eratosthenes_delete(struct SieveOfEratosthenes *erato)
     free(erato->sieve);
     free(erato);
 }
-
-/******************************************************************************
- * Main function.
- *****************************************************************************/
-int
-main(int const argc, char const *argv[])
-{
-    size_t limit = 100;
-    if (argc > 1)
-    {
-        char *endptr;
-        long long unsigned limit_ = strtoull(argv[1], &endptr, 10);
-        if (*endptr != '\0' || limit_ > SIZE_MAX)
-        {
-            fprintf(stderr, "Argument is unparseable.\n");
-            return EXIT_FAILURE;
-        }
-        limit = limit_;
-    }
-
-    struct SieveOfEratosthenes *erato = sieve_of_eratosthenes_new(limit);
-    size_t num_of_primes = sieve_of_eratosthenes_count(erato);
-    sieve_of_eratosthenes_delete(erato);
-    printf("%zu primes (excluding 2, 3 and 5) till %zu\n", num_of_primes, limit);
-}

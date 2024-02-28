@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
 
-files=(*/*.c)
+files=(src/*.c*)
 if [ "$1" = check ]
 then
     clang-format --dry-run -Werror ${files[@]}
