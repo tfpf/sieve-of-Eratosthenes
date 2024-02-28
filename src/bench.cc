@@ -21,6 +21,7 @@ extern "C"
  *
  * @param sieve_new Function which constructs the sieve.
  * @param sieve_delete Function which deallocates the sieve.
+ * @param message String to display before starting the benchmark.
  *****************************************************************************/
 template <typename C, typename D>
 void
