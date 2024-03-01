@@ -30,7 +30,7 @@ bench(C sieve_new, D sieve_delete, char const *message)
         auto end = std::chrono::steady_clock::now();
         auto total_delay = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count();
         auto average_delay = total_delay / iterations;
-        std::cout << twopower << ' ' << std::setw(6) << average_delay << " ms\n";
+        std::cout << "1 << " << twopower << ' ' << std::setw(6) << average_delay << " ms\n";
     }
     std::cout << '\n';
 }
