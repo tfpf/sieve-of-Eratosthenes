@@ -3,15 +3,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct SieveOfEratosthenes;
-struct SieveOfEratosthenes *sieve_of_eratosthenes_new(size_t limit);
-size_t sieve_of_eratosthenes_count(struct SieveOfEratosthenes *erato);
-void sieve_of_eratosthenes_delete(struct SieveOfEratosthenes *erato);
-
-struct SieveOfAtkin;
-struct SieveOfAtkin *sieve_of_atkin_new(size_t limit);
-size_t sieve_of_atkin_count(struct SieveOfAtkin *atkin);
-void sieve_of_atkin_delete(struct SieveOfAtkin *atkin);
+// I have placed the function prototypes in a header file, but you might want
+// to simply copy and paste the sieve functions in the file where you'd like to
+// use them.
+#include "sieve_of_eratosthenes_atkin.h"
 
 /******************************************************************************
  * Main function.

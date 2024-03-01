@@ -1,6 +1,8 @@
 #! /usr/bin/env bash
 
-files=(*/*.c*)
+shopt -s globstar
+
+files=(**/*.[ch]*)
 if [ "$1" = check ]
 then
     clang-format --dry-run -Werror ${files[@]}

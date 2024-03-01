@@ -3,21 +3,7 @@
 #include <iomanip>
 #include <iostream>
 
-// I don't know if C++ data types are identical to C data types of the same
-// names. However, as long as the same compiler is used to compile both C and
-// C++ programs, there should be no issue.
-extern "C"
-{
-    struct SieveOfEratosthenes;
-    struct SieveOfEratosthenes *sieve_of_eratosthenes_new(std::size_t limit);
-    std::size_t sieve_of_eratosthenes_count(struct SieveOfEratosthenes *erato);
-    void sieve_of_eratosthenes_delete(struct SieveOfEratosthenes *erato);
-
-    struct SieveOfAtkin;
-    struct SieveOfAtkin *sieve_of_atkin_new(std::size_t limit);
-    std::size_t sieve_of_atkin_count(struct SieveOfAtkin *atkin);
-    void sieve_of_atkin_delete(struct SieveOfAtkin *atkin);
-}
+#include "sieve_of_eratosthenes_atkin.h"
 
 /******************************************************************************
  * Run a benchmark.

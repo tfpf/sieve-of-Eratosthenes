@@ -1,3 +1,4 @@
+CPPFLAGS = -Isrc/include
 CFLAGS = -std=c11 -O2 -Wall -Wextra -flto
 CXXFLAGS = -std=c++11 -O2 -Wall -Wextra -flto
 LDLIBS = -lm

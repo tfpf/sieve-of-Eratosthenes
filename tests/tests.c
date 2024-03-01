@@ -1,15 +1,7 @@
 #include <assert.h>
 #include <stddef.h>
 
-struct SieveOfEratosthenes;
-struct SieveOfEratosthenes *sieve_of_eratosthenes_new(size_t limit);
-size_t sieve_of_eratosthenes_count(struct SieveOfEratosthenes *erato);
-void sieve_of_eratosthenes_delete(struct SieveOfEratosthenes *erato);
-
-struct SieveOfAtkin;
-struct SieveOfAtkin *sieve_of_atkin_new(size_t limit);
-size_t sieve_of_atkin_count(struct SieveOfAtkin *atkin);
-void sieve_of_atkin_delete(struct SieveOfAtkin *atkin);
+#include "sieve_of_eratosthenes_atkin.h"
 
 int
 main(void)
