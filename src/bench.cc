@@ -3,6 +3,9 @@
 #include <iomanip>
 #include <iostream>
 
+// I don't know if C++ data types are identical to C data types of the same
+// names. However, as long as the same compiler is used to compile both C and
+// C++ programs, there should be no issue.
 extern "C"
 {
     struct SieveOfEratosthenes;
@@ -29,7 +32,7 @@ bench(C sieve_new, D sieve_delete, char const *message)
 {
     std::cout << message << '\n';
     int constexpr iterations = 10;
-    for (unsigned twopower = 20; twopower <= 30; ++twopower)
+    for (unsigned twopower = 16; twopower <= 30; ++twopower)
     {
         std::size_t limit = 1UL << twopower;
         auto begin = std::chrono::steady_clock::now();
