@@ -5,7 +5,7 @@ shopt -s globstar
 files=(**/*.[ch]*)
 if [ "$1" = check ]
 then
-    clang-format --dry-run -Werror ${files[@]}
+    clang-format --verbose --dry-run -Werror ${files[@]}
 else
-    clang-format -i ${files[@]}
+    clang-format --verbose -i ${files[@]}
 fi
