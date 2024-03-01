@@ -1,14 +1,20 @@
+CPPFLAGS = -Isrc/include
 CFLAGS = -std=c11 -O2 -Wall -Wextra -flto
 CXXFLAGS = -std=c++11 -O2 -Wall -Wextra -flto
 LDLIBS = -lm
 
 Sources = src/sieve_of_eratosthenes.c src/sieve_of_atkin.c
 Objects = $(Sources:.c=.o)
-Main = src/main.c
-Bench = src/bench.cc
 
-sieve: $(Objects) $(Main)
+.PHONY: all
+
+all: target/sieve target/bench target/tests
+
+target/sieve: $(Objects) src/main.c
 	$(LINK.c) $^ -o $@ $(LDLIBS)
 
-bench: $(Objects) $(Bench)
+target/bench: $(Objects) bench/bench.cc
 	$(LINK.cc) $^ -o $@ $(LDLIBS)
+
+target/tests: $(Objects) tests/tests.c
+	$(LINK.c) $^ -o $@ $(LDLIBS)
