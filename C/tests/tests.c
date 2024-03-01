@@ -1,6 +1,5 @@
 #include <assert.h>
 #include <stddef.h>
-#include <stdio.h>
 
 #include "sieve_of_eratosthenes_atkin.h"
 
