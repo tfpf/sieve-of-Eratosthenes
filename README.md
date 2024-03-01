@@ -20,8 +20,8 @@ separately.
 
 The sieve of Atkin is faster than the sieve of Eratosthenes. Tabulated below are the times taken (to two significant
 figures) to construct the sieves up to _n_ on my machine. Note that the time taken to iterate over the primes (after
-constructing the sieves) will, in theory, be identical for given _n_ because the two sieves store the list of primes in
-the same manner.
+constructing the sieves) will, in theory, be identical for a given _n_ because the two sieves store the list of primes
+in the same manner.
 
 |_n_|Eratosthenes|Atkin|
 |-:|-:|-:|
