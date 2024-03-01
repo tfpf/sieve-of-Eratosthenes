@@ -14,7 +14,6 @@ main(void)
     {
         size_t limit = limits_primes[i][0];
         size_t primes = limits_primes[i][1];
-        printf("Verifying %zu primes up to %zu.\n", primes, limit);
 
         struct SieveOfEratosthenes *erato = sieve_of_eratosthenes_new(limit);
         size_t erato_count = sieve_of_eratosthenes_count(erato);
