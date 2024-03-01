@@ -21,6 +21,6 @@ main(void)
 
     struct SieveOfAtkin *atkin = sieve_of_atkin_new(1000000000);
     size_t atkin_count = sieve_of_atkin_count(atkin);
-    sieve_of_eratosthenes_delete(erato);
+    sieve_of_atkin_delete(atkin);
     assert(atkin_count == 50847531);
 }
