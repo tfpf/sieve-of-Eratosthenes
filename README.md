@@ -2,6 +2,9 @@
   vol. 73, no. 246, pp. 1023–1030.
 * D. J. Bernstein, [primegen 0.97](http://cr.yp.to/primegen.html).
 
+[![style](https://github.com/tfpf/sieve-of-atkin/actions/workflows/style.yml/badge.svg)](https://github.com/tfpf/sieve-of-atkin/actions/workflows/style.yml)
+[![tests](https://github.com/tfpf/sieve-of-atkin/actions/workflows/tests.yml/badge.svg)](https://github.com/tfpf/sieve-of-atkin/actions/workflows/tests.yml)
+
 # Sieve of Atkin
 
 A fast prime generator. I have implemented the technique described by Atkin and Bernstein (as opposed to brute-forcing
