@@ -2,9 +2,6 @@
   vol. 73, no. 246, pp. 1023–1030.
 * D. J. Bernstein, [primegen 0.97](http://cr.yp.to/primegen.html).
 
-[![style](https://github.com/tfpf/sieve-of-atkin/actions/workflows/style.yml/badge.svg)](https://github.com/tfpf/sieve-of-atkin/actions/workflows/style.yml)
-[![tests](https://github.com/tfpf/sieve-of-atkin/actions/workflows/tests.yml/badge.svg)](https://github.com/tfpf/sieve-of-atkin/actions/workflows/tests.yml)
-
 # Sieve of Atkin
 
 A fast prime generator. I have implemented the technique described by Atkin and Bernstein (as opposed to brute-forcing
@@ -13,6 +10,9 @@ understand, and it does not store the list of primes, so I decided to write it m
 
 Also included here is a wheel-factorised sieve of Eratosthenes implementation which proceeds mostly along the same
 lines as the sieve of Atkin.
+
+[![style](https://github.com/tfpf/sieve-of-atkin/actions/workflows/style.yml/badge.svg)](https://github.com/tfpf/sieve-of-atkin/actions/workflows/style.yml)
+[![tests](https://github.com/tfpf/sieve-of-atkin/actions/workflows/tests.yml/badge.svg)](https://github.com/tfpf/sieve-of-atkin/actions/workflows/tests.yml)
 
 ## Implementation Notes
 
