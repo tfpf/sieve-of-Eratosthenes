@@ -5,14 +5,15 @@ LDLIBS = -lm
 Sources = src/sieve_of_eratosthenes.c src/sieve_of_atkin.c
 Objects = $(Sources:.c=.o)
 
-.PHONY: sieve bench
+.PHONY: all
 
-sieve: target/sieve
+all: target/sieve target/bench target/tests
 
 target/sieve: $(Objects) src/main.c
 	$(LINK.c) $^ -o $@ $(LDLIBS)
 
-bench: target/bench
-
 target/bench: $(Objects) bench/bench.cc
 	$(LINK.cc) $^ -o $@ $(LDLIBS)
+
+target/tests: $(Objects) tests/tests.c
+	$(LINK.c) $^ -o $@ $(LDLIBS)
