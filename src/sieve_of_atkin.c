@@ -32,11 +32,11 @@ struct SieveOfAtkin
  * @param delta What each of the prime numbers must be congruent to modulo 60.
  * @param x Starting abcissa.
  * @param y0 Starting ordinate.
- * @param k0 Starting quotient.
  *****************************************************************************/
 static void
-sieve_of_atkin_algorithm_4_1(struct SieveOfAtkin *atkin, int delta, long long x, long long y0, long long k0)
+sieve_of_atkin_algorithm_4_1(struct SieveOfAtkin *atkin, int delta, long long x, long long y0)
 {
+    long long k0 = (4 * x * x + y0 * y0 - delta) / 60;
     while (k0 < (long long)atkin->sieve_len)
     {
         k0 += 2 * x + 15;
@@ -71,11 +71,11 @@ sieve_of_atkin_algorithm_4_1(struct SieveOfAtkin *atkin, int delta, long long x,
  * @param delta What each of the prime numbers must be congruent to modulo 60.
  * @param x Starting abcissa.
  * @param y0 Starting ordinate.
- * @param k0 Starting quotient.
  *****************************************************************************/
 static void
-sieve_of_atkin_algorithm_4_2(struct SieveOfAtkin *atkin, int delta, long long x, long long y0, long long k0)
+sieve_of_atkin_algorithm_4_2(struct SieveOfAtkin *atkin, int delta, long long x, long long y0)
 {
+    long long k0 = (3 * x * x + y0 * y0 - delta) / 60;
     while (k0 < (long long)atkin->sieve_len)
     {
         k0 += x + 5;
@@ -110,11 +110,11 @@ sieve_of_atkin_algorithm_4_2(struct SieveOfAtkin *atkin, int delta, long long x,
  * @param delta What each of the prime numbers must be congruent to modulo 60.
  * @param x Starting abcissa.
  * @param y0 Starting ordinate.
- * @param k0 Starting quotient.
  *****************************************************************************/
 static void
-sieve_of_atkin_algorithm_4_3(struct SieveOfAtkin *atkin, int delta, long long x, long long y0, long long k0)
+sieve_of_atkin_algorithm_4_3(struct SieveOfAtkin *atkin, int delta, long long x, long long y0)
 {
+    long long k0 = (3 * x * x - y0 * y0 - delta) / 60;
     while (true)
     {
         while (k0 >= (long long)atkin->sieve_len)
@@ -150,10 +150,9 @@ sieve_of_atkin_algorithm_3_1(struct SieveOfAtkin *atkin, int delta)
     {
         for (int g = 1; g <= 30; g += 2)
         {
-            int quadratic = 4 * f * f + g * g;
-            if (delta == quadratic % 60)
+            if (delta == (4 * f * f + g * g) % 60)
             {
-                sieve_of_atkin_algorithm_4_1(atkin, delta, f, g, quadratic / 60);
+                sieve_of_atkin_algorithm_4_1(atkin, delta, f, g);
             }
         }
     }
@@ -172,10 +171,9 @@ sieve_of_atkin_algorithm_3_2(struct SieveOfAtkin *atkin, int delta)
     {
         for (int g = 2; g <= 30; g += 2)
         {
-            int quadratic = 3 * f * f + g * g;
-            if (delta == quadratic % 60)
+            if (delta == (3 * f * f + g * g) % 60)
             {
-                sieve_of_atkin_algorithm_4_2(atkin, delta, f, g, quadratic / 60);
+                sieve_of_atkin_algorithm_4_2(atkin, delta, f, g);
             }
         }
     }
@@ -194,19 +192,13 @@ sieve_of_atkin_algorithm_3_3(struct SieveOfAtkin *atkin, int delta)
     {
         for (int g = f % 2 + 1; g <= 30; g += 2)
         {
-            int quadratic = 3 * f * f - g * g;
-            int remainder = quadratic % 60;
-            int quotient = quadratic / 60;
             // We need residues modulo 60, so make negative remainders
             // positive.
-            if(remainder < 0)
-            {
-                remainder += 60;
-                --quotient;
-            }
+            int remainder = (3 * f * f - g * g) % 60;
+            remainder = remainder < 0 ? remainder + 60 : remainder;
             if (delta == remainder)
             {
-                sieve_of_atkin_algorithm_4_3(atkin, delta, f, g, quotient);
+                sieve_of_atkin_algorithm_4_3(atkin, delta, f, g);
             }
         }
     }
