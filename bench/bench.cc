@@ -41,6 +41,6 @@ bench(C sieve_new, D sieve_delete, char const *message)
 int
 main(void)
 {
-    bench(sieve_of_eratosthenes_new, sieve_of_eratosthenes_delete, "Eratosthenes");
+    // bench(sieve_of_eratosthenes_new, sieve_of_eratosthenes_delete, "Eratosthenes");
     bench(sieve_of_atkin_new, sieve_of_atkin_delete, "Atkin");
 }
