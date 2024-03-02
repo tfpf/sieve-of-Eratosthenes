@@ -7,5 +7,4 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
-      - working-directory: C
-        run: ./autoformat.bash check
+      - run: ./autoformat.bash check
