@@ -2,10 +2,13 @@
 
 shopt -s globstar
 
+# Switch to the directory containing the script so that relative paths may be
+# used.
+cd "${0%/*}"
 files=(**/*.[ch]*)
 if [ "$1" = check ]
 then
-    clang-format --dry-run -Werror ${files[@]}
+    clang-format --verbose --dry-run -Werror ${files[@]}
 else
-    clang-format -i ${files[@]}
+    clang-format --verbose -i ${files[@]}
 fi
