@@ -26,10 +26,12 @@ struct SieveOfAtkin
 };
 
 /******************************************************************************
- * Algorithm 4.1.
+ * Given a point which generates a prime number congruent to 1 modulo 4 and
+ * `delta` modulo 60, find all such prime numbers by tracing the generating
+ * curve.
  *
  * @param atkin Sieve of Atkin.
- * @param delta What each of the prime numbers must be congruent to modulo 60.
+ * @param delta Residue.
  * @param x Starting abcissa.
  * @param y0 Starting ordinate.
  *****************************************************************************/
@@ -65,10 +67,12 @@ sieve_of_atkin_algorithm_4_1(struct SieveOfAtkin *atkin, int delta, long long x,
 }
 
 /******************************************************************************
- * Algorithm 4.2.
+ * Given a point which generates a prime number congruent to 1 modulo 6 and
+ * `delta` modulo 60, find all such prime numbers by tracing the generating
+ * curve.
  *
  * @param atkin Sieve of Atkin.
- * @param delta What each of the prime numbers must be congruent to modulo 60.
+ * @param delta Residue.
  * @param x Starting abcissa.
  * @param y0 Starting ordinate.
  *****************************************************************************/
@@ -104,10 +108,12 @@ sieve_of_atkin_algorithm_4_2(struct SieveOfAtkin *atkin, int delta, long long x,
 }
 
 /******************************************************************************
- * Algorithm 4.3.
+ * Given a point which generates a prime number congruent to 11 modulo 12 and
+ * `delta` modulo 60, find all such prime numbers by tracing the generating
+ * curve.
  *
  * @param atkin Sieve of Atkin.
- * @param delta What each of the prime numbers must be congruent to modulo 60.
+ * @param delta Residue.
  * @param x Starting abcissa.
  * @param y0 Starting ordinate.
  *****************************************************************************/
@@ -138,10 +144,11 @@ sieve_of_atkin_algorithm_4_3(struct SieveOfAtkin *atkin, int delta, long long x,
 }
 
 /******************************************************************************
- * Algorithm 3.1.
+ * Of the prime numbers congruent to 1 modulo 4, find those congruent to
+ * `delta` modulo 60.
  *
  * @param atkin Sieve of Atkin.
- * @param delta What each of the prime numbers must be congruent to modulo 60.
+ * @param delta Residue.
  *****************************************************************************/
 static void
 sieve_of_atkin_algorithm_3_1(struct SieveOfAtkin *atkin, int delta)
@@ -159,10 +166,11 @@ sieve_of_atkin_algorithm_3_1(struct SieveOfAtkin *atkin, int delta)
 }
 
 /******************************************************************************
- * Algorithm 3.2.
+ * Of the prime numbers congruent to 1 modulo 6, find those congruent to
+ * `delta` modulo 60.
  *
  * @param atkin Sieve of Atkin.
- * @param delta What each of the prime numbers must be congruent to modulo 60.
+ * @param delta Residue.
  *****************************************************************************/
 static void
 sieve_of_atkin_algorithm_3_2(struct SieveOfAtkin *atkin, int delta)
@@ -180,10 +188,11 @@ sieve_of_atkin_algorithm_3_2(struct SieveOfAtkin *atkin, int delta)
 }
 
 /******************************************************************************
- * Algorithm 3.3.
+ * Of the prime numbers congruent to 11 modulo 12, find those congruent to
+ * `delta` modulo 60.
  *
  * @param atkin Sieve of Atkin.
- * @param delta What each of the prime numbers must be congruent to modulo 60.
+ * @param delta Residue.
  *****************************************************************************/
 static void
 sieve_of_atkin_algorithm_3_3(struct SieveOfAtkin *atkin, int delta)
@@ -269,7 +278,7 @@ sieve_of_atkin_new(size_t limit)
             if ((sieve[sieve_idx] >> shift & 1) == 1)
             {
                 size_t num_sqr = num * num;
-                for (size_t multiple = num_sqr; multiple < limit_rounded; multiple += num_sqr)
+                for (size_t multiple = num_sqr; multiple < limit_rounded; multiple += 2 * num_sqr)
                 {
                     sieve[multiple / 60] &= ~((long unsigned)1 << SHIFTS[multiple % 60]);
                 }
