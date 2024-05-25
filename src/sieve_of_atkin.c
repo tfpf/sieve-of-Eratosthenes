@@ -269,7 +269,7 @@ sieve_of_atkin_new(size_t limit)
             if ((sieve[sieve_idx] >> shift & 1) == 1)
             {
                 size_t num_sqr = num * num;
-                for (size_t multiple = num_sqr; multiple < limit_rounded; multiple += num_sqr)
+                for (size_t multiple = num_sqr; multiple < limit_rounded; multiple += 2 * num_sqr)
                 {
                     sieve[multiple / 60] &= ~((long unsigned)1 << SHIFTS[multiple % 60]);
                 }
